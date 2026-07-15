@@ -98,6 +98,73 @@ Contenedor Python liviano que monta `/var/log/` del host (read-only) y expone m�
 | `auth_sudo_total` | Counter | `user`, `command` |
 | `auth_lines_processed_total` | Counter | — |
 
+## Alertas (PromQL)
+
+Consultas listas para configurar alertas en Grafana o Prometheus. Todos los thresholds son orientativos, ajustalos según tu server.
+
+### 🔴 CPU > 80%
+
+```
+(100 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+```
+
+Alerta cuando el CPU promedio de los últimos 5 minutos supere el 80%.
+
+### 🟡 CPU > 90% (crítico)
+
+```
+(100 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+```
+
+### 🔴 RAM disponible < 10%
+
+```
+node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 10
+```
+
+Alerta cuando quede menos del 10% de RAM disponible.
+
+### 🟡 RAM disponible < 20%
+
+```
+node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 20
+```
+
+### 🔴 Disco (/) ocupado > 90%
+
+```
+(1 - node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 > 90
+```
+
+### 🟡 Disco (/) ocupado > 80%
+
+```
+(1 - node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 > 80
+```
+
+### 🚨 SSH: múltiples fallos en poco tiempo
+
+```
+sum(rate(auth_ssh_failed_total[5m])) > 1
+```
+
+Alerta cuando haya más de 1 intento fallido por segundo en promedio los últimos 5 minutos (ajustá el threshold según tu caso).
+
+### 🐌 Load Average alto
+
+```
+node_load1 > 4
+```
+
+Alerta si el load average de 1 minuto supera 4. Ajustá el número según los cores de tu CPU.
+
+### ⚙️ Cómo configurar en Grafana
+
+1. Panel → **Alert** → **Create alert rule**
+2. Pegá la query PromQL
+3. Definí: `Evaluate every 1m`, `For 5m` (para evitar falsos positivos)
+4. Elegí canal de notificación (email, Telegram, Slack, etc.)
+
 ## Variables de Entorno
 
 | Variable | Default | Descripción |
