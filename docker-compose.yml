@@ -1,0 +1,68 @@
+networks:
+  node-eye:
+    driver: bridge
+
+volumes:
+  prometheus-data:
+  grafana-data:
+
+services:
+  node-exporter:
+    image: prom/node-exporter:v1.9.1
+    container_name: node-eye-exporter
+    command:
+      - --path.rootfs=/host
+      - --collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)
+    ports:
+      - "15100:9100"
+    volumes:
+      - /:/host:ro
+    restart: unless-stopped
+    networks:
+      - node-eye
+
+  auth-exporter:
+    build: ./auth-exporter
+    container_name: node-eye-auth
+    ports:
+      - "15101:9101"
+    volumes:
+      - /var/log:/var/log:ro
+    restart: unless-stopped
+    networks:
+      - node-eye
+
+  prometheus:
+    image: prom/prometheus:v3.2.1
+    container_name: node-eye-prometheus
+    ports:
+      - "15102:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=60d
+      - --storage.tsdb.retention.size=20GB
+    restart: unless-stopped
+    networks:
+      - node-eye
+
+  grafana:
+    image: grafana/grafana:11.6.0
+    container_name: node-eye-grafana
+    ports:
+      - "15103:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin123}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_INSTALL_PLUGINS: "grafana-worldmap-panel"
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - node-eye
