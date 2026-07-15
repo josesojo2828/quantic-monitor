@@ -73,23 +73,16 @@ def parse_line(line: str):
 
 
 def follow(file):
-    # Go to end, but parse last 100 lines first
-    file.seek(0, 2)
-    end = file.tell()
-    # Read last ~100 lines from end
-    chunk = 4096
-    if end > chunk:
-        file.seek(end - chunk)
-        tail = file.readlines()
-        for line in tail[-100:]:
-            yield line
-    file.seek(end)
+    # Parse ALL existing lines first
+    for line in file.readlines():
+        yield line.rstrip()
+    # Then follow new lines
     while True:
         line = file.readline()
         if not line:
             time.sleep(0.5)
             continue
-        yield line
+        yield line.rstrip()
 
 # ─── Main ──────────────────────────────────────────────────────────────
 
@@ -107,7 +100,7 @@ def main():
     with open(log_file, "r", errors="replace") as f:
         for line in follow(f):
             try:
-                parse_line(line.rstrip())
+                parse_line(line)
             except Exception as e:
                 print(f"parse error: {e}")
 
