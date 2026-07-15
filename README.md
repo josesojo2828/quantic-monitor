@@ -98,42 +98,31 @@ Contenedor Python liviano que monta `/var/log/` del host (read-only) y expone m�
 | `auth_sudo_total` | Counter | `user`, `command` |
 | `auth_lines_processed_total` | Counter | — |
 
-## Alertas (PromQL)
+## Consultas de uso (%)
 
-Consultas para obtener el % de uso. Configurá los thresholds directamente en Grafana.
-
-### 🔴 CPU — % de uso (últimos 5min)
+### CPU (% uso últimos 5min)
 
 ```
-100 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100
+100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
 ```
 
-### 🔴 RAM — % disponible
+### RAM (% usado)
 
 ```
-node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100
+((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100
 ```
 
-### 🔴 Disco — % ocupado (por mountpoint)
+### Disco (% ocupado)
 
 ```
 (1 - node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100
 ```
 
-Cambiá `mountpoint="/"` por la partición que quieras monitorear (`/data`, `/var`, etc.).
-
-### 🚨 SSH — intentos fallidos por segundo
+### SSH (intentos fallidos/5min)
 
 ```
 sum(rate(auth_ssh_failed_total[5m]))
 ```
-
-### ⚙️ Cómo configurar en Grafana
-
-1. Panel → **Alert** → **Create alert rule**
-2. Pegá la query PromQL
-3. Definí: `Evaluate every 1m`, `For 5m`
-4. Elegí canal de notificación (email, Telegram, Slack, etc.)
 
 ## Variables de Entorno
 
