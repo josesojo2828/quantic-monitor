@@ -40,11 +40,13 @@ ip_tracker: dict[str, int] = {}
 
 RE_FAILED = re.compile(
     r"Failed (password|publickey|keyboard-interactive) for\s+"
-    r"(?:\S+ )?"
+    r"(?:invalid user\s+)?"
     r"(\S+) from (\S+) port"
 )
 RE_ACCEPTED = re.compile(
-    r"Accepted (password|publickey) for (\S+) from (\S+) port"
+    r"Accepted (password|publickey) for\s+"
+    r"(?:invalid user\s+)?"
+    r"(\S+) from (\S+) port"
 )
 RE_SUDO = re.compile(
     r"sudo:\s+(\S+)\s+.*COMMAND=(.*)"
@@ -71,7 +73,17 @@ def parse_line(line: str):
 
 
 def follow(file):
+    # Go to end, but parse last 100 lines first
     file.seek(0, 2)
+    end = file.tell()
+    # Read last ~100 lines from end
+    chunk = 4096
+    if end > chunk:
+        file.seek(end - chunk)
+        tail = file.readlines()
+        for line in tail[-100:]:
+            yield line
+    file.seek(end)
     while True:
         line = file.readline()
         if not line:
