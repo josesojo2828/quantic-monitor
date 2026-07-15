@@ -1,4 +1,4 @@
-# node-eye 👁️
+# quantic-monitor 👁️
 
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://docker.com)
 [![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?logo=prometheus&logoColor=white)](https://prometheus.io)
@@ -32,8 +32,8 @@ Stack de monitoreo centralizado para servidores, todo dockerizado. Métricas del
 
 ```bash
 # Clonar
-git clone https://github.com/josesojo2828/node-eye.git
-cd node-eye
+git clone https://github.com/josesojo2828/quantic-monitor.git
+cd quantic-monitor
 
 # Opcional: cambiar password de Grafana
 cp .env.example .env

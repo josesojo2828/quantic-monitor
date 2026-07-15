@@ -1,5 +1,5 @@
 networks:
-  node-eye:
+  quantic-monitor:
     driver: bridge
 
 volumes:
@@ -9,7 +9,7 @@ volumes:
 services:
   node-exporter:
     image: prom/node-exporter:v1.9.1
-    container_name: node-eye-exporter
+    container_name: quantic-exporter
     command:
       - --path.rootfs=/host
       - --collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)
@@ -19,22 +19,22 @@ services:
       - /:/host:ro
     restart: unless-stopped
     networks:
-      - node-eye
+      - quantic-monitor
 
   auth-exporter:
     build: ./auth-exporter
-    container_name: node-eye-auth
+    container_name: quantic-auth
     ports:
       - "15101:9101"
     volumes:
       - /var/log:/var/log:ro
     restart: unless-stopped
     networks:
-      - node-eye
+      - quantic-monitor
 
   prometheus:
     image: prom/prometheus:v3.2.1
-    container_name: node-eye-prometheus
+    container_name: quantic-prometheus
     ports:
       - "15102:9090"
     volumes:
@@ -47,11 +47,11 @@ services:
       - --storage.tsdb.retention.size=20GB
     restart: unless-stopped
     networks:
-      - node-eye
+      - quantic-monitor
 
   grafana:
     image: grafana/grafana:11.6.0
-    container_name: node-eye-grafana
+    container_name: quantic-grafana
     ports:
       - "15103:3000"
     environment:
@@ -65,4 +65,4 @@ services:
       - grafana-data:/var/lib/grafana
     restart: unless-stopped
     networks:
-      - node-eye
+      - quantic-monitor
