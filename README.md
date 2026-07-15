@@ -23,10 +23,10 @@ Stack de monitoreo centralizado para servidores, todo dockerizado. Métricas del
 
 | Puerto | Servicio | Qué monitorea |
 |--------|----------|---------------|
-| `15100` | node-exporter | CPU, RAM, disco, red, uptime |
-| `15101` | auth-exporter | SSH logins (fallidos/ok), IPs, sudo |
-| `15102` | Prometheus | Almacenamiento (60d / 20GB) |
-| `15103` | Grafana | Dashboards pre-configurados |
+| `15102` | Prometheus | Almacenamiento (60d / 20GB) — expuesto para Grafana externo |
+| — | node-exporter | CPU, RAM, disco, red, uptime (solo red interna) |
+| — | auth-exporter | SSH logins (fallidos/ok), IPs, sudo (solo red interna) |
+| `15103` | Grafana | Dashboards (solo con `--profile complete`)
 
 ## Quick Start
 
@@ -38,11 +38,22 @@ cd quantic-monitor
 # Opcional: cambiar password de Grafana
 cp .env.example .env
 
-# Levantar
+# Solo servicios base (node-exporter + auth-exporter + prometheus)
 docker compose up -d
+
+# Stack completo (con Grafana incluido)
+docker compose --profile complete up -d
 ```
 
-Abrir [http://localhost:15103](http://localhost:15103) — `admin / admin123`
+- **Prometheus**: [http://localhost:15102](http://localhost:15102)
+- **Grafana** (con profile): [http://localhost:15103](http://localhost:15103) — `admin / admin123`
+
+## Usar con Grafana externo
+
+Si ya tenés un Grafana en otro lado (VPS, servidor central):
+
+1. Agregá **Prometheus** como datasource apuntando a `http://<IP-del-server>:15102`
+2. Importá los dashboards de `grafana/dashboards/` usando ese datasource
 
 ## Dashboards
 

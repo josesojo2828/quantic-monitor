@@ -13,8 +13,6 @@ services:
     command:
       - --path.rootfs=/host
       - --collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)
-    ports:
-      - "15100:9100"
     volumes:
       - /:/host:ro
     restart: always
@@ -24,8 +22,6 @@ services:
   auth-exporter:
     build: ./auth-exporter
     container_name: quantic-auth
-    ports:
-      - "15101:9101"
     volumes:
       - /var/log:/var/log:ro
     restart: always
