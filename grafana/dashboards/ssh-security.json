@@ -16,7 +16,7 @@
       "title": "Failed Logins (24h)",
       "type": "stat",
       "gridPos": { "h": 4, "w": 4, "x": 0, "y": 0 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -39,7 +39,7 @@
       "title": "Successful Logins (24h)",
       "type": "stat",
       "gridPos": { "h": 4, "w": 4, "x": 4, "y": 0 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -62,7 +62,7 @@
       "title": "Sudo Commands (24h)",
       "type": "stat",
       "gridPos": { "h": 4, "w": 4, "x": 8, "y": 0 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -85,7 +85,7 @@
       "title": "Currently Tracked IPs",
       "type": "stat",
       "gridPos": { "h": 4, "w": 4, "x": 12, "y": 0 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "targets": [{
         "expr": "count(auth_ssh_failed_by_ip > 0)",
         "legendFormat": "IPs"
@@ -95,7 +95,7 @@
       "title": "Failed Logins Over Time",
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "cps"
@@ -110,7 +110,7 @@
       "title": "Successful Logins Over Time",
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "targets": [{
         "expr": "sum(rate(auth_ssh_success_total[5m]))",
         "legendFormat": "success/s"
@@ -120,7 +120,7 @@
       "title": "Top Offending IPs",
       "type": "bargauge",
       "gridPos": { "h": 8, "w": 8, "x": 0, "y": 12 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "thresholds": {
@@ -142,7 +142,7 @@
       "title": "Auth Events by User",
       "type": "table",
       "gridPos": { "h": 8, "w": 8, "x": 8, "y": 12 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "targets": [{
         "expr": "sum by (user) (rate(auth_ssh_failed_total[24h]))",
         "legendFormat": "failed {{user}}"
@@ -155,7 +155,7 @@
       "title": "Sudo Activity (24h)",
       "type": "table",
       "gridPos": { "h": 8, "w": 8, "x": 16, "y": 12 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "targets": [{
         "expr": "topk(10, sum by (user, command) (increase(auth_sudo_total[24h])))",
         "legendFormat": "{{user}}: {{command}}"

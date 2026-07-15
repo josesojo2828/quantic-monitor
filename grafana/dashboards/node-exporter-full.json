@@ -25,7 +25,7 @@
       "title": "CPU Usage",
       "type": "gauge",
       "gridPos": { "h": 6, "w": 4, "x": 0, "y": 0 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "percentunit",
@@ -50,7 +50,7 @@
       "title": "Load Average",
       "type": "stat",
       "gridPos": { "h": 6, "w": 4, "x": 4, "y": 0 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "thresholds": {
@@ -78,7 +78,7 @@
       "title": "Uptime",
       "type": "stat",
       "gridPos": { "h": 6, "w": 4, "x": 8, "y": 0 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "dtdurations",
@@ -94,7 +94,7 @@
       "title": "CPU Usage (by core)",
       "type": "timeseries",
       "gridPos": { "h": 7, "w": 12, "x": 0, "y": 6 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "percentunit",
@@ -111,7 +111,7 @@
       "title": "RAM Usage",
       "type": "gauge",
       "gridPos": { "h": 6, "w": 4, "x": 12, "y": 0 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "bytes",
@@ -137,7 +137,7 @@
       "title": "RAM Breakdown",
       "type": "timeseries",
       "gridPos": { "h": 7, "w": 12, "x": 12, "y": 6 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "bytes"
@@ -164,7 +164,7 @@
       "title": "Disk Space",
       "type": "table",
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 13 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "bytes",
@@ -194,7 +194,7 @@
       "title": "Disk IO",
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 13 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "iops"
@@ -212,7 +212,7 @@
       "title": "Network Traffic",
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 18, "x": 0, "y": 21 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "bps"
@@ -230,7 +230,7 @@
       "title": "Network Errors",
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 6, "x": 18, "y": 21 },
-      "datasource": { "uid": "prometheus" },
+      "datasource": { "type": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "unit": "cps"
