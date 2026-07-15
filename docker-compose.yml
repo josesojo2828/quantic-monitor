@@ -17,7 +17,7 @@ services:
       - "15100:9100"
     volumes:
       - /:/host:ro
-    restart: unless-stopped
+    restart: always
     networks:
       - quantic-monitor
 
@@ -28,7 +28,7 @@ services:
       - "15101:9101"
     volumes:
       - /var/log:/var/log:ro
-    restart: unless-stopped
+    restart: always
     networks:
       - quantic-monitor
 
@@ -45,11 +45,12 @@ services:
       - --storage.tsdb.path=/prometheus
       - --storage.tsdb.retention.time=60d
       - --storage.tsdb.retention.size=20GB
-    restart: unless-stopped
+    restart: always
     networks:
       - quantic-monitor
 
   grafana:
+    profiles: ["complete"]
     image: grafana/grafana:11.6.0
     container_name: quantic-grafana
     ports:
@@ -58,11 +59,10 @@ services:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin123}
       GF_USERS_ALLOW_SIGN_UP: "false"
-
     volumes:
       - ./grafana/datasources:/etc/grafana/provisioning/datasources
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
       - grafana-data:/var/lib/grafana
-    restart: unless-stopped
+    restart: always
     networks:
       - quantic-monitor
